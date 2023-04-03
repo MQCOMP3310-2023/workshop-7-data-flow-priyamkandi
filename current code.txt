@@ -1,0 +1,43 @@
+/**
+ * @name Empty block
+ * @kind problem
+ * @problem.severity warning
+ * @id java/example/empty-block
+ */
+
+import java
+
+// from BlockStmt b
+// where b.getNumStmt() = 0
+// select b, "This is an empty block."
+
+
+// predicate inAssignment(Expr e){
+//     exists (AssignExpr a| a.getAChildExpr*() = e) or exists (
+//         LocalVariableDeclExpr a| a.getAChildExpr*() = e )
+
+// }
+
+// class StringConcat extends AddExpr {
+//     StringConcat() { this.getType().toString()="String"}
+// }
+
+// from StringConcat str
+// where inAssignment(str)
+// select str, "Addition used in an assignment or declaration"
+
+
+class UnsafeInput extends MethodAccess {
+    UnsafeInput() {
+        (this.getMethod().hasName("nextLine") and this.getMethod().getDeclaringType().
+        hasQualifiedName("java.util", "Scanner"))
+
+        or
+
+        (this.getMethod().hasName("readLine") and this.getMethod().getDeclaringType().
+        hasQualifiedName("java.io", "BufferedReader"))
+    }
+}
+
+from UnsafeInput unsafe
+select unsafe, "Unsafe Input"
